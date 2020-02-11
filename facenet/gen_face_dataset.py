@@ -12,8 +12,10 @@ index=0
 cnt=0
 video_capture = cv2.VideoCapture(0)
 print('start')
-
-while cnt<=300:
+for a in os.listdir('./dataset'):
+    if(int(a)==index):
+        index+=1
+while cnt<300:
     # Grab a single frame of video
     ret, frame = video_capture.read()
 
