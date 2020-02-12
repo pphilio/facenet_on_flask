@@ -3,7 +3,15 @@ import cv2
 import numpy as np
 import os
 from scipy import misc
+import shutil
 
+def clean_dir():
+    #might be danger, be aware to use
+    for a in os.listdir('./dataset'):
+        shutil.rmtree('./dataset/'+a)
+
+#todo clean_dir 모듈화해서 필요시에만 호출하게끔 수정
+clean_dir()
 known_face_encodings=[]
 known_face_names=[]
 face_names=[]
@@ -76,3 +84,7 @@ while cnt<300:
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
+
+
+
+
