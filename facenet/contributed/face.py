@@ -37,8 +37,6 @@ import numpy as np
 import tensorflow as tf
 from scipy import misc
 
-
-
 from facenet.src import align, facenet
 
 gpu_memory_fraction = 0.3
@@ -63,6 +61,12 @@ class Recognition:
         self.detect = Detection()
         self.encoder = Encoder()
         self.identifier = Identifier()
+
+    def __init__(self, model, classifier):
+
+        self.detect = Detection()
+        self.encoder = Encoder(model)
+        self.identifier = Identifier(classifier)
 
     def add_identity(self, image, person_name):
         faces = self.detect.find_faces(image)
@@ -89,23 +93,33 @@ class Identifier:
     def __init__(self):
         with open(classifier_model, 'rb') as infile:
             self.model, self.class_names = pickle.load(infile)
+
+    def __init__(self, _classifier_model):
+        with open(_classifier_model, 'rb') as infile:
+            self.model, self.class_names = pickle.load(infile)
+
     def identify(self, face):
         if face.embedding is not None:
             predictions = self.model.predict_proba([face.embedding])
             print(predictions)
-            if(np.max(predictions)>0.6):
+            if (np.max(predictions) > 0.6):
                 best_class_indices = np.argmax(predictions, axis=1)
                 return self.class_names[best_class_indices[0]]
             else:
                 return "unknown"
 
 
-
 class Encoder:
     def __init__(self):
         self.sess = tf.Session()
         with self.sess.as_default():
-            facenet.load_model(facenet_model_checkpoint)
+            facenet.load_model('')
+
+    def __init__(self, model):
+        self.sess = tf.Session()
+        with self.sess.as_default():
+            facenet.load_model(model)
+
     def generate_embedding(self, face):
         # Get input and output tensors
         images_placeholder = tf.get_default_graph().get_tensor_by_name("input:0")
