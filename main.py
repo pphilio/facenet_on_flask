@@ -16,6 +16,7 @@
 from flask import Flask, render_template, Response
 from camera import VideoCamera
 from facenet.realtime_face_recognition import recognize_realtime, RecognitionCamera
+from facenet.test import align_and_generate_classifier
 
 app = Flask(__name__)
 
@@ -24,6 +25,13 @@ app = Flask(__name__)
 def index():
     print('hi')
     return render_template('index.html')
+
+
+@app.route('/generate_classifier')
+def generate_classifier():
+    print('generating...')
+    align_and_generate_classifier()
+    return render_template('generated_classifier.html')
 
 
 @app.route('/realtime_recognize')

@@ -13,8 +13,12 @@ from .src.align import detect_face as detect_face
 import random
 from time import sleep
 
+file_dir_path, _ = os.path.split(__file__)
+input_dir = os.path.join(file_dir_path, './raw_images')
+output_dir = os.path.join(file_dir_path, './aligned_data')
 
-def align_raw_images(input_dir='./raw_images', output_dir='./aligned_data', image_size=182, margin=44,
+
+def align_raw_images(input_dir=input_dir, output_dir=output_dir, image_size=182, margin=44,
                      random_order=False, gpu_memory_fraction=1.0, detect_multiple_faces=False):
     sleep(random.random())
 

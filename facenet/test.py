@@ -1,3 +1,4 @@
+import os
 import time
 
 import cv2
@@ -6,13 +7,19 @@ from facenet import align_raw_data, generate_classifier
 from facenet.contributed import face
 from facenet.realtime_face_recognition import add_overlays
 
+file_dir_path, _ = os.path.split(__file__)
+
+align_data_dir = os.path.join(file_dir_path, './aligned_data')
+model_path = os.path.join(file_dir_path, './assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759')
+classifier_path = os.path.join(file_dir_path, './aligned_data/classifier_first.pkl')
+
 
 def align_and_generate_classifier():
     align_raw_data.align_raw_images()
 
-    generate_classifier.generate_classifier(mode='TRAIN', data_dir='./aligned_data',
-                                            model='./assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759',
-                                            classifier_path='./aligned_data/classifier_first.pkl', batch_size=1000,
+    generate_classifier.generate_classifier(mode='TRAIN', data_dir=align_data_dir,
+                                            model=model_path,
+                                            classifier_path=classifier_path, batch_size=1000,
                                             min_nrof_images_per_class=10, nrof_train_images_per_class=15,
                                             use_split_dataset=True)
 
