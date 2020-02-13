@@ -30,7 +30,7 @@ def recognize_realtime(debug=False, frame_interval = 3, fps_display_interval = 5
 
     if debug is True:
         print("Debug enabled")
-        fade.debug = True
+        face.debug = True
 
     while True:
         # Capture frame-by-frame
@@ -51,3 +51,23 @@ def recognize_realtime(debug=False, frame_interval = 3, fps_display_interval = 5
         frame_count += 1
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
+
+class RecognitionCamera(object):
+
+    def __init__(self):
+        self.frame_interval = 3
+        self.fps_display_interval = 5
+        self.frame_rate = 0
+        self.frame_count = 0
+
+        self.video_capture = cv2.VideoCapture(0)
+
+    def __del__(self):
+        self.video_capture.release()
+
+    def get_frame(self):
+        ret, frame = self.video_capture.read()
+
+        ret, jpeg = cv2.imencode('.jpg', frame)
+        return jpeg.tobytes()
+
