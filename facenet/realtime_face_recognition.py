@@ -21,7 +21,8 @@ def add_overlays(frame, faces, frame_rate):
                 cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0),
                 thickness=2, lineType=2)
 
-def recognize_realtime(debug=False, frame_interval = 3, fps_display_interval = 5):
+
+def recognize_realtime(debug=False, frame_interval=3, fps_display_interval=5):
     frame_rate = 0
     frame_count = 0
     video_capture = cv2.VideoCaputre(0)
@@ -40,7 +41,7 @@ def recognize_realtime(debug=False, frame_interval = 3, fps_display_interval = 5
             faces = face_recognition.identify(frame)
 
             # Check our current fps
-            end_time= time.time()
+            end_time = time.time()
             if end_time - start_time > fps_display_interval:
                 frame_rate = int(frame_count / (end_time - start_time))
                 start_time = time.time()
@@ -52,15 +53,23 @@ def recognize_realtime(debug=False, frame_interval = 3, fps_display_interval = 5
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
 
+
 class RecognitionCamera(object):
 
-    def __init__(self):
+    def __init__(self, debug=False):
         self.frame_interval = 3
         self.fps_display_interval = 5
         self.frame_rate = 0
         self.frame_count = 0
 
         self.video_capture = cv2.VideoCapture(0)
+        self.face_recognition = face.Recognition()
+
+        self.start_time = time.time()
+
+        if debug is True:
+            print('Debug enabled')
+            face.debug = True
 
     def __del__(self):
         self.video_capture.release()
@@ -68,6 +77,17 @@ class RecognitionCamera(object):
     def get_frame(self):
         ret, frame = self.video_capture.read()
 
+        if self.frame_count % self.frame_interval == 0:
+            faces = face_recognition.identify(frame)
+
+            self.end_time = time.time()
+            if self.end_time - self.start_time > self.fps_display_interval:
+                self.frame_rate = int(self.frame_count / (self.end_time - self.start_time))
+                self.start_time = time.time()
+                frame_count = 0
+        add_overlays(frame, faces, self.frame_rate)
+
+        self.frame_cont += 1
+
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
-
