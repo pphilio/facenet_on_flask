@@ -30,7 +30,7 @@ import time
 
 import cv2
 
-import contributed.face as face
+import facenet.contributed.face as face
 
 
 def add_overlays(frame, faces, frame_rate):

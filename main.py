@@ -24,7 +24,7 @@ from facenet.realtime_face_recognition import RecognitionCamera
 app = Flask(__name__)
 
 file_dir_path, _ = os.path.split(__file__)
-
+print(file_dir_path)
 
 @app.route('/watch')
 def index():
@@ -34,16 +34,19 @@ def index():
 
 @app.route('/take_pictures')
 def take_pictures():
-    take_images.save_raw_iamges('tester')
+    take_images.save_raw_images('tester22')
+    print('doneeeeeeeeee')
+    return render_template('generated_classifier.html')
 
 
 @app.route('/generate_classifier')
 def generate_classifier():
     print('generating...')
 
-    align_data_dir = os.path.join(file_dir_path, './aligned_data')
-    model_path = os.path.join(file_dir_path, './assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759')
-    classifier_path = os.path.join(file_dir_path, './aligned_data/classifier_first.pkl')
+    align_data_dir = os.path.join(file_dir_path, '/aligned_data')
+    model_path = os.path.join(file_dir_path, 'assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759')
+    print(file_dir_path)
+    classifier_path = os.path.join(file_dir_path, '/assets/classifier_first.pkl')
 
     align_raw_data.align_raw_images()
     generate_classifier.generate_classifier(mode='TRAIN', data_dir=align_data_dir,

@@ -26,7 +26,7 @@ def split_dataset(dataset, min_nrof_images_per_class, nrof_train_images_per_clas
     return train_set, test_set
 
 
-def generate_classifier(mode='CLASSIFY', data_dir='./aligned_data',
+def generate_classifier(mode='CLASSIFY', data_dir='./assets',
                         model='./assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759',
                         classifier_path='./assets/classifier_default.pkl', use_split_dataset=False, batch_size=90,
                         image_size=160, seed=666, min_nrof_images_per_class=20, nrof_train_images_per_class=10):
