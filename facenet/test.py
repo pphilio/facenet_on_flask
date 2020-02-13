@@ -3,7 +3,7 @@ import time
 
 import cv2
 
-from facenet import align_raw_data, generate_classifier
+from facenet import align_raw_data, generate_classifier, take_images
 from facenet.contributed import face
 from facenet.realtime_face_recognition import add_overlays
 
@@ -31,8 +31,8 @@ def test_realtime_recognition(debug=False):
     frame_count = 0
 
     video_capture = cv2.VideoCapture(0)
-    face_recognition = face.Recognition(model='/assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759',
-                                        classifier='./aligned_data/classifier_first.pkl')
+    face_recognition = face.Recognition(model=model_path,
+                                        classifier=classifier_path)
     start_time = time.time()
 
     if debug is True:
@@ -67,6 +67,8 @@ def test_realtime_recognition(debug=False):
 
 
 if __name__ == "__main__":
-    align_and_generate_classifier()
+    # align_and_generate_classifier()
+    #
+    # test_realtime_recognition(True)
 
-    test_realtime_recognition(True)
+    take_images.save_raw_images('tester')

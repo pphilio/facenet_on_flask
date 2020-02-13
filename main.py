@@ -13,12 +13,17 @@
 # 1. Install Python dependencies: cv2, flask. (wish that pip install works like a charm)
 # 2. Run "python main.py".
 # 3. Navigate the browser to the local webpage.
+import os
+
 from flask import Flask, render_template, Response
+
+from facenet import take_images, align_raw_data, generate_classifier
 from camera import VideoCamera
-from facenet.realtime_face_recognition import recognize_realtime, RecognitionCamera
-from facenet.test import align_and_generate_classifier
+from facenet.realtime_face_recognition import RecognitionCamera
 
 app = Flask(__name__)
+
+file_dir_path, _ = os.path.split(__file__)
 
 
 @app.route('/watch')
@@ -27,10 +32,26 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/take_pictures')
+def take_pictures():
+    take_images.save_raw_iamges('tester')
+
+
 @app.route('/generate_classifier')
 def generate_classifier():
     print('generating...')
-    align_and_generate_classifier()
+
+    align_data_dir = os.path.join(file_dir_path, './aligned_data')
+    model_path = os.path.join(file_dir_path, './assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759')
+    classifier_path = os.path.join(file_dir_path, './aligned_data/classifier_first.pkl')
+
+    align_raw_data.align_raw_images()
+    generate_classifier.generate_classifier(mode='TRAIN', data_dir=align_data_dir,
+                                            model=model_path,
+                                            classifier_path=classifier_path, batch_size=1000,
+                                            min_nrof_images_per_class=10, nrof_train_images_per_class=15,
+                                            use_split_dataset=True)
+
     return render_template('generated_classifier.html')
 
 
