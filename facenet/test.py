@@ -17,11 +17,11 @@ classifier_path = os.path.join(file_dir_path, './assets/classifier_first.pkl')
 def align_and_generate_classifier():
     align_raw_data.align_raw_images()
 
-    generate_classifier.generate_classifier(mode='TRAIN', data_dir=align_data_dir,
-                                            model=model_path,
-                                            classifier_path=classifier_path, batch_size=1000,
-                                            min_nrof_images_per_class=10, nrof_train_images_per_class=15,
-                                            use_split_dataset=True)
+    generate_classifier.generate(mode='TRAIN', data_dir=align_data_dir,
+                                 model=model_path,
+                                 classifier_path=classifier_path, batch_size=1000,
+                                 min_nrof_images_per_class=10, nrof_train_images_per_class=15,
+                                 use_split_dataset=True)
 
 
 def test_realtime_recognition(debug=False):

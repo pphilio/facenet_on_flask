@@ -12,6 +12,11 @@ import math
 import pickle
 from sklearn.svm import SVC
 
+file_dir_path, _ = os.path.split(__file__)
+
+assets_dir = os.path.join(file_dir_path, './assets')
+model_path = os.path.join(file_dir_path, './assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759')
+classifier_path = os.path.join(file_dir_path, './assets/classifier_first.pkl')
 
 def split_dataset(dataset, min_nrof_images_per_class, nrof_train_images_per_class):
     train_set = []
@@ -26,10 +31,10 @@ def split_dataset(dataset, min_nrof_images_per_class, nrof_train_images_per_clas
     return train_set, test_set
 
 
-def generate_classifier(mode='CLASSIFY', data_dir='./assets',
-                        model='./assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759',
-                        classifier_path='./assets/classifier_default.pkl', use_split_dataset=False, batch_size=90,
-                        image_size=160, seed=666, min_nrof_images_per_class=20, nrof_train_images_per_class=10):
+def generate(mode='CLASSIFY', data_dir=assets_dir,
+             model=model_path,
+             classifier=classifier_path, use_split_dataset=False, batch_size=90,
+             image_size=160, seed=666, min_nrof_images_per_class=20, nrof_train_images_per_class=10):
     mode_types = ['TRAIN', 'CLASSIFY']
     if mode not in mode_types:
         raise ValueError("Invalid mode. Expected one of: {}".format(mode_types))
@@ -87,7 +92,7 @@ def generate_classifier(mode='CLASSIFY', data_dir='./assets',
                 feed_dict = {images_placeholder: images, phase_train_placeholder: False}
                 emb_array[start_index:end_index, :] = sess.run(embeddings, feed_dict=feed_dict)
 
-            classifier_filename_exp = os.path.expanduser(classifier_path)
+            classifier_filename_exp = os.path.expanduser(classifier)
 
             if (mode == 'TRAIN'):
                 # Train classifier

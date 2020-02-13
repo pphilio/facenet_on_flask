@@ -34,27 +34,29 @@ def index():
 
 @app.route('/take_pictures')
 def take_pictures():
-    take_images.save_raw_images('tester22')
+    take_images.save_raw_images('tester2')
     print('doneeeeeeeeee')
     return render_template('generated_classifier.html')
 
 
-@app.route('/generate_classifier')
-def generate_classifier():
+@app.route('/get_classifier')
+def get_classifier():
     print('generating...')
 
-    align_data_dir = os.path.join(file_dir_path, '/aligned_data')
-    model_path = os.path.join(file_dir_path, 'assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759')
+    align_data_dir = os.path.join(file_dir_path, './facenet/aligned_data')
+    model_path = os.path.join(file_dir_path, 'facenet/assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759')
     print(file_dir_path)
-    classifier_path = os.path.join(file_dir_path, '/assets/classifier_first.pkl')
+
+    classifier_path = os.path.join(file_dir_path, './facenet/assets/classifier_first.pkl')
 
     align_raw_data.align_raw_images()
-    generate_classifier.generate_classifier(mode='TRAIN', data_dir=align_data_dir,
-                                            model=model_path,
-                                            classifier_path=classifier_path, batch_size=1000,
-                                            min_nrof_images_per_class=10, nrof_train_images_per_class=15,
-                                            use_split_dataset=True)
-
+    print('d')
+    generate_classifier.generate(mode='TRAIN', data_dir=align_data_dir,
+                                 model=model_path,
+                                 classifier=classifier_path, batch_size=1000,
+                                 min_nrof_images_per_class=10, nrof_train_images_per_class=15,
+                                 use_split_dataset=True)
+    print('f')
     return render_template('generated_classifier.html')
 
 
