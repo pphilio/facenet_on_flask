@@ -26,7 +26,8 @@ def recognize_realtime(debug=False, frame_interval=3, fps_display_interval=5):
     frame_rate = 0
     frame_count = 0
     video_capture = cv2.VideoCaputre(0)
-    face_recognition = face.Recognition()
+    face_recognition = face.Recognition(model='./assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759',
+                                        classifier='./aligned_data/classifier_first.pkl')
     start_time = time.time()
 
     if debug is True:
@@ -63,7 +64,8 @@ class RecognitionCamera(object):
         self.frame_count = 0
 
         self.video_capture = cv2.VideoCapture(0)
-        self.face_recognition = face.Recognition()
+        self.face_recognition = face.Recognition(model='./facenet/assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759',
+                                        classifier='./facenet/aligned_data/classifier_first.pkl')
 
         self.start_time = time.time()
 

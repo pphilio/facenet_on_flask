@@ -24,7 +24,7 @@ def test_realtime_recognition(debug=False):
     frame_count = 0
 
     video_capture = cv2.VideoCapture(0)
-    face_recognition = face.Recognition(model='./assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759',
+    face_recognition = face.Recognition(model='/assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759',
                                         classifier='./aligned_data/classifier_first.pkl')
     start_time = time.time()
 
