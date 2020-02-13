@@ -11,7 +11,7 @@ file_dir_path, _ = os.path.split(__file__)
 
 align_data_dir = os.path.join(file_dir_path, './aligned_data')
 model_path = os.path.join(file_dir_path, './assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759')
-classifier_path = os.path.join(file_dir_path, './aligned_data/classifier_first.pkl')
+classifier_path = os.path.join(file_dir_path, './assets/classifier_first.pkl')
 
 
 def align_and_generate_classifier():

@@ -43,7 +43,7 @@ def generate_classifier():
 
     align_data_dir = os.path.join(file_dir_path, './aligned_data')
     model_path = os.path.join(file_dir_path, './assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759')
-    classifier_path = os.path.join(file_dir_path, './aligned_data/classifier_first.pkl')
+    classifier_path = os.path.join(file_dir_path, './assets/classifier_first.pkl')
 
     align_raw_data.align_raw_images()
     generate_classifier.generate_classifier(mode='TRAIN', data_dir=align_data_dir,

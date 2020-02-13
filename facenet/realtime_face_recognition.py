@@ -69,9 +69,9 @@ class RecognitionCamera(object):
         self.frame_rate = 0
         self.frame_count = 0
 
-        self.model_path = os.path.join(file_dir_path, 'assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759')
+        self.model_path = os.path.join(file_dir_path, './assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759')
         self.classifier_path = os.path.join(file_dir_path,
-                                            './aligned_data/classifier_first.pkl')
+                                            './assets/classifier_first.pkl')
 
         self.video_capture = cv2.VideoCapture(0)
         self.face_recognition = face.Recognition(
