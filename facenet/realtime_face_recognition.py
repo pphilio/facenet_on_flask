@@ -20,3 +20,34 @@ def add_overlays(frame, faces, frame_rate):
     cv2.putText(frame, str(frame_rate) + " fps", (10, 30),
                 cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0),
                 thickness=2, lineType=2)
+
+def recognize_realtime(debug=False, frame_interval = 3, fps_display_interval = 5):
+    frame_rate = 0
+    frame_count = 0
+    video_capture = cv2.VideoCaputre(0)
+    face_recognition = face.Recognition()
+    start_time = time.time()
+
+    if debug is True:
+        print("Debug enabled")
+        fade.debug = True
+
+    while True:
+        # Capture frame-by-frame
+        ret, frame = video_capture.read()
+
+        if frame_count % frame_interval == 0:
+            faces = face_recognition.identify(frame)
+
+            # Check our current fps
+            end_time= time.time()
+            if end_time - start_time > fps_display_interval:
+                frame_rate = int(frame_count / (end_time - start_time))
+                start_time = time.time()
+                frame_count = 0
+
+        add_overlays(frame, faces, frame_rate)
+
+        frame_count += 1
+        ret, jpeg = cv2.imencode('.jpg', frame)
+        return jpeg.tobytes()
