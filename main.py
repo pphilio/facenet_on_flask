@@ -15,7 +15,7 @@
 # 3. Navigate the browser to the local webpage.
 from flask import Flask, render_template, Response
 from camera import VideoCamera
-from facenet.realtime_face_recognition import recognize_realtime
+from facenet.realtime_face_recognition import recognize_realtime, RecognitionCamera
 
 app = Flask(__name__)
 
@@ -47,10 +47,8 @@ def video_feed():
 
 @app.route('/realtime_recognition_feed')
 def realtime_recognition_feed():
-    camera = yield (b'--frame\r\n'
-                    b'Content-type: image/jpeg\r\n\r\n' + recognize_realtime(
-        True) + b'\r\n\r\n')
-    return Response(camera, mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(gen(RecognitionCamera()),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 if __name__ == '__main__':
