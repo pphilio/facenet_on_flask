@@ -1,8 +1,11 @@
+import os
 import sys
 import time
 import cv2
 
 from facenet.contributed import face
+
+file_dir_path, _ = os.path.split(os.path.realpath(__file__))
 
 
 def add_overlays(frame, faces, frame_rate):
@@ -26,8 +29,11 @@ def recognize_realtime(debug=False, frame_interval=3, fps_display_interval=5):
     frame_rate = 0
     frame_count = 0
     video_capture = cv2.VideoCaputre(0)
-    face_recognition = face.Recognition(model='./assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759',
-                                        classifier='./aligned_data/classifier_first.pkl')
+
+    model_path = os.path.join(file_dir_path, './assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759')
+    classifier_path = os.path.join(file_dir_path, './aligned_data/classifier_first.pkl')
+
+    face_recognition = face.Recognition(model=model_path, classifier=classifier_path)
     start_time = time.time()
 
     if debug is True:
@@ -63,9 +69,14 @@ class RecognitionCamera(object):
         self.frame_rate = 0
         self.frame_count = 0
 
+        self.model_path = os.path.join(file_dir_path, './assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759')
+        self.classifier_path = os.path.join(file_dir_path,
+                                            './aligned_data/classifier_first.pkl')
+
         self.video_capture = cv2.VideoCapture(0)
-        self.face_recognition = face.Recognition(model='./facenet/assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759',
-                                        classifier='./facenet/aligned_data/classifier_first.pkl')
+        self.face_recognition = face.Recognition(
+            model=self.model_path,
+            classifier=self.classifier_path)
 
         self.start_time = time.time()
 
@@ -80,16 +91,16 @@ class RecognitionCamera(object):
         ret, frame = self.video_capture.read()
 
         if self.frame_count % self.frame_interval == 0:
-            faces = face_recognition.identify(frame)
+            self.faces = self.face_recognition.identify(frame)
 
             self.end_time = time.time()
             if self.end_time - self.start_time > self.fps_display_interval:
                 self.frame_rate = int(self.frame_count / (self.end_time - self.start_time))
                 self.start_time = time.time()
                 frame_count = 0
-        add_overlays(frame, faces, self.frame_rate)
+        add_overlays(frame, self.faces, self.frame_rate)
 
-        self.frame_cont += 1
+        self.frame_count += 1
 
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
