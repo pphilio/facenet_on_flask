@@ -30,8 +30,8 @@ def recognize_realtime(debug=False, frame_interval=3, fps_display_interval=5):
     frame_count = 0
     video_capture = cv2.VideoCaputre(0)
 
-    model_path = os.path.join(file_dir_path, './assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759')
-    classifier_path = os.path.join(file_dir_path, './aligned_data/classifier_first.pkl')
+    model_path = os.path.join(file_dir_path, 'assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759')
+    classifier_path = os.path.join(file_dir_path, 'aligned_data/classifier_first.pkl')
 
     face_recognition = face.Recognition(model=model_path, classifier=classifier_path)
     start_time = time.time()
@@ -69,7 +69,7 @@ class RecognitionCamera(object):
         self.frame_rate = 0
         self.frame_count = 0
 
-        self.model_path = os.path.join(file_dir_path, './assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759')
+        self.model_path = os.path.join(file_dir_path, 'assets/model_VGGFace2_Inception-ResNet-v1/20180402-114759')
         self.classifier_path = os.path.join(file_dir_path,
                                             './aligned_data/classifier_first.pkl')
 

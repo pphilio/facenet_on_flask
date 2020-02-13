@@ -14,8 +14,8 @@ import random
 from time import sleep
 
 file_dir_path, _ = os.path.split(__file__)
-input_dir = os.path.join(file_dir_path, './raw_images')
-output_dir = os.path.join(file_dir_path, './aligned_data')
+input_dir = os.path.join(file_dir_path, 'raw_images')
+output_dir = os.path.join(file_dir_path, 'aligned_data')
 
 
 def align_raw_images(input_dir=input_dir, output_dir=output_dir, image_size=182, margin=44,
