@@ -5,6 +5,11 @@ import os
 from scipy import misc
 import shutil
 
+#for data augmentation
+from skimage.transform import rescale
+from skimage.transform import rotate
+
+
 def clean_dir():
     #might be danger, be aware to use
     for a in os.listdir('./dataset'):
@@ -55,7 +60,22 @@ while cnt<300:
             name = known_face_names[best_match_index]
             if cnt%10==0:
                 print('{}/{}.jpg'.format(output_path,int(cnt/10)))
+                print(frame.shape)
                 cv2.imwrite('{}/{}.jpg'.format(output_path, int(cnt/10)), frame)
+                frame1=rescale(frame,1/4,multichannel=True)
+                print(frame1.shape)
+                frame1=cv2.convertScaleAbs(frame1,alpha=(255.0))
+                cv2.imwrite('{}/{}_rescale.jpg'.format(output_path, int(cnt / 10)), frame1)
+                frame2=rotate(frame,45)
+                print(frame2.shape)
+                frame2=cv2.convertScaleAbs(frame2,alpha=(255.0))
+                cv2.imwrite('{}/{}_rotate.jpg'.format(output_path, int(cnt / 10)), frame2)
+                frame3=rotate(frame,-45)
+                frame3=cv2.convertScaleAbs(frame3,alpha=(255.0))
+                print(frame3.shape)
+                cv2.imwrite('{}/{}_rotate2.jpg'.format(output_path, int(cnt / 10)), frame3)
+
+                cv2.imwrite('{}/{}_flip.jpg'.format(output_path, int(cnt / 10)), frame[:,::-1])
             cnt = cnt + 1
         face_names.append(name)
 
